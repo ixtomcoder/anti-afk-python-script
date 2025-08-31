@@ -1,20 +1,27 @@
-# anti-afk-python-script
+# auto-keep-awake-prevent-sleep-python
 
-Cross-platform anti-AFK utility (Windows/macOS/Linux). Keeps the system awake via OS inhibitors; optional Windows mouse jiggle with configurable interval and pixel amplitude. Can auto-enable when certain processes are running (e.g. FreeFileSync/RealTimeSync, OBS).
+> Keep your PC awake on **Windows / macOS / Linux**. Prevent sleep/idle using OS inhibitors, with optional **Windows mouse jiggler** (configurable interval & pixel amplitude). Can auto-enable while certain apps (e.g. **FreeFileSync / RealTimeSync / OBS**) are running.
+
+![OS](https://img.shields.io/badge/OS-Windows%20%7C%20macOS%20%7C%20Linux-informational)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-success)
+
+---
 
 ## Features
-- ALWAYS_ON switch (keep awake permanently)
-- Process watch list (case-insensitive, `.exe` optional; substring match)
-- Mouse jiggle (Windows): configurable `interval` and `pixels`
-- Works with `caffeinate` (macOS) and `systemd-inhibit`/`gnome-session-inhibit` (Linux)
+- **ALWAYS_ON**: hält dauerhaft wach (ohne Prozess-Überwachung)
+- **Process watch**: case-insensitive, `.exe` egal, **Substring-Match**
+- **Mouse jiggler (Windows)**: Intervall **und** Pixel-Amplitude einstellbar
+- **Cross-platform**: `caffeinate` (macOS), `systemd-inhibit` / `gnome-session-inhibit` (Linux)
+- **Verbose logging** mit `--debug`
 
-## Usage
+---
+
+## Quick start
 ```bash
-# Always on + jiggle every 120s, 2px
+# 1) Klonen
+git clone https://github.com/<your-user>/auto-keep-awake-prevent-sleep-python.git
+cd auto-keep-awake-prevent-sleep-python
+
+# 2) Starten (Dateiname ggf. anpassen, z.B. anti-afk.py)
 python anti-afk.py --always-on --jiggle --jiggle-interval 120 --jiggle-pixels 2
-
-# Only when certain apps run (FreeFileSync/RealTimeSync/OBS)
-python anti-afk.py --watch "filesync,realtimesync,obs64" --jiggle --debug
-
-# Fixed duration (2 hours), no jiggle
-python anti-afk.py --duration 7200 --no-jiggle
