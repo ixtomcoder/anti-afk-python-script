@@ -10,12 +10,15 @@
 
 ## Features
 - **ALWAYS_ON** switch — keep awake permanently (ignores watch list)
-- **Process watch list** — case-insensitive, `.exe` optional, **substring match**
-- **Mouse jiggler (Windows)** — configurable **interval** and **pixel amplitude**
+- **Process watch list** — case-insensitive, `.exe` optional
+- **Matching modes** — `--match exact|startswith|substr|regex` (default: `substr`)
+- **Mouse jiggler (Windows)** — configurable **interval** and **pixel amplitude**; optional `--idle-threshold` to jiggle only after N seconds idle
+- **Display vs System control** — `--display-only` or `--system-only` (or both defaults if unspecified)
 - **Cross-platform** backends:
   - Windows: `SetThreadExecutionState` (+ optional jiggler)
   - macOS: `caffeinate`
   - Linux: `systemd-inhibit` → fallback to `gnome-session-inhibit` → `xdg-screensaver`
+- **Clean shutdown** — signal handling (Ctrl+C / SIGTERM) for graceful exit
 - **Verbose logging** with `--debug`
 - **Zero Python dependencies** (stdlib only)
 
@@ -47,6 +50,12 @@ python anti-afk.py --duration 7200 --no-jiggle
 
 # Faster process scanning (every 2s)
 python anti-afk.py --watch "filesync" --poll 2
+
+# Match mode example (prefix-only) + display-only
+python anti-afk.py --watch "filesync" --match startswith --display-only
+
+# Windows: jiggle only if idle for 5 minutes
+python anti-afk.py --watch "obs64" --jiggle --idle-threshold 300
 ```
 
 > **Tip:** Because of substring matching, `filesync` will match both **FreeFileSync.exe** and **RealTimeSync.exe**.
@@ -60,7 +69,12 @@ python anti-afk.py --watch "filesync" --poll 2
 --jiggle / --no-jiggle         : Enable/disable Windows mouse jiggler
 --jiggle-interval <sec>        : Seconds between mini-moves (e.g., 50, 120)
 --jiggle-pixels <px>           : Pixel amplitude per mini-move (±n px)
+--idle-threshold <sec>         : Only jiggle if user idle time ≥ N seconds (Windows)
 --watch "a,b,c"                : Comma-separated process names (case-insensitive)
+--match exact|startswith|substr|regex
+                               : Process match mode (default: substr)
+--display-only                 : Prevent display sleep only
+--system-only                  : Prevent system sleep only
 --duration <sec>               : Keep awake for a fixed time
 --poll <sec>                   : Process scan interval
 --debug                        : Verbose logs
